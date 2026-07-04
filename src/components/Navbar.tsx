@@ -7,10 +7,16 @@ import InputBase from "@mui/material/InputBase";
 import IconButton from "@mui/material/IconButton";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import SearchIcon from "@mui/icons-material/Search";
+import MenuIcon from "@mui/icons-material/Menu";
 import { styled, alpha } from "@mui/material/styles";
 import {useNavigate} from "react-router-dom";
 import Badge from "@mui/material/Badge";
 import Typography from "@mui/material/Typography";
+import Drawer from "@mui/material/Drawer";
+import List from "@mui/material/List";
+import ListItem from "@mui/material/ListItem";
+import ListItemButton from "@mui/material/ListItemButton";
+import ListItemText from "@mui/material/ListItemText";
 
 interface NavLink {
     label: string;
@@ -48,6 +54,7 @@ const SearchWrapper = styled(Box)(({ theme }) => ({
 
 export default function Navbar({ cartSize = 0 }: Readonly<Props>) {
     const [searchValue, setSearchValue] = useState("");
+    const [mobileOpen, setMobileOpen] = useState(false);
     const navigate = useNavigate();
 
     const handleSearch = () => {
@@ -55,9 +62,16 @@ export default function Navbar({ cartSize = 0 }: Readonly<Props>) {
             pathname: "/search",
             search: `?q=${searchValue}`
         });
+        setMobileOpen(false);
+    }
+
+    const handleNavigate = (href: string) => {
+        navigate(href);
+        setMobileOpen(false);
     }
 
     return (
+        <>
         <AppBar
             position="sticky"
             elevation={0}
@@ -94,11 +108,11 @@ export default function Navbar({ cartSize = 0 }: Readonly<Props>) {
                     </Typography>
                 </Box>
 
-                <Box sx={{ display: "flex", alignItems: "center", gap: 0.5, flexGrow: 1 }}>
+                <Box sx={{ display: { xs: "none", md: "flex" }, alignItems: "center", gap: 0.5, flexGrow: 1 }}>
                     {NAV_LINKS.map((link) => (
                         <Button
                             key={link.href}
-                            onClick={() => navigate(link.href)}
+                            onClick={() => handleNavigate(link.href)}
                             sx={{
                                 color: "rgba(255, 255, 255, 0.82)",
                                 fontWeight: 500,
@@ -117,7 +131,9 @@ export default function Navbar({ cartSize = 0 }: Readonly<Props>) {
                     ))}
                 </Box>
 
-                <SearchWrapper>
+                <Box sx={{ flexGrow: 1, display: { xs: "block", md: "none" } }} />
+
+                <SearchWrapper sx={{ display: { xs: "none", md: "flex" } }}>
                     <SearchIcon
                         onClick={handleSearch}
                         sx={{ color: "rgba(255,255,255,0.5)", fontSize: 18, cursor: "pointer" }}
@@ -171,7 +187,89 @@ export default function Navbar({ cartSize = 0 }: Readonly<Props>) {
                         <ShoppingCartIcon fontSize="small" />
                     </Badge>
                 </IconButton>
+
+                <IconButton
+                    onClick={() => setMobileOpen(true)}
+                    aria-label="open navigation menu"
+                    sx={{
+                        display: { xs: "inline-flex", md: "none" },
+                        color: "rgba(255,255,255,0.82)",
+                        "&:hover": {
+                            color: "#fff",
+                            backgroundColor: "rgba(255,255,255,0.1)",
+                        },
+                    }}
+                >
+                    <MenuIcon />
+                </IconButton>
             </Toolbar>
         </AppBar>
+
+            <Drawer
+                anchor="right"
+                open={mobileOpen}
+                onClose={() => setMobileOpen(false)}
+                slotProps={{
+                    paper: {
+                        sx: {
+                            width: 280,
+                            background: "rgba(18, 18, 18, 0.98)",
+                            backdropFilter: "blur(16px) saturate(180%)",
+                            WebkitBackdropFilter: "blur(16px) saturate(180%)",
+                            color: "#fff",
+                            borderLeft: "1px solid rgba(255,255,255,0.1)",
+                        },
+                    },
+                }}
+            >
+            <Box sx={{ p: 2, display: "flex", flexDirection: "column", gap: 2 }} role="presentation">
+                <SearchWrapper>
+                    <SearchIcon
+                        onClick={handleSearch}
+                        sx={{ color: "rgba(255,255,255,0.5)", fontSize: 18, cursor: "pointer" }}
+                    />
+                    <InputBase
+                        placeholder="Search…"
+                        value={searchValue}
+                        onChange={(e) => setSearchValue(e.target.value)}
+                        onKeyDown={(e) => {
+                            if (e.key === "Enter") {
+                                handleSearch();
+                            }
+                        }}
+                        inputProps={{ "aria-label": "search" }}
+                        fullWidth
+                        sx={{
+                            color: "#fff",
+                            fontSize: "0.875rem",
+                            "& ::placeholder": { color: "rgba(255,255,255,0.45)", opacity: 1 },
+                        }}
+                    />
+                </SearchWrapper>
+
+                <List>
+                    {NAV_LINKS.map((link) => (
+                        <ListItem key={link.href} disablePadding>
+                            <ListItemButton
+                                onClick={() => handleNavigate(link.href)}
+                                sx={{
+                                    borderRadius: 1.5,
+                                    "&:hover": { backgroundColor: "rgba(255,255,255,0.1)" },
+                                }}
+                            >
+                                <ListItemText
+                                    primary={link.label}
+                                    slotProps={{
+                                        primary: {
+                                            sx: { color: "rgba(255,255,255,0.85)", fontWeight: 500 },
+                                    }}}
+                                />
+                            </ListItemButton>
+                        </ListItem>
+                    ))}
+                </List>
+            </Box>
+        </Drawer>
+        </>
     );
 }

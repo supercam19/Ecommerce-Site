@@ -15,6 +15,10 @@ import {useSearchParams} from "react-router-dom";
 import {MOCK_PRODUCTS} from "../data/products";
 import type { Product } from "../data/products";
 import ProductCard from "../components/ProductCard";
+import Drawer from "@mui/material/Drawer";
+import IconButton from "@mui/material/IconButton";
+import FilterListIcon from "@mui/icons-material/FilterList";
+import CloseIcon from "@mui/icons-material/Close";
 
 const FACET_PANEL_BG = "rgba(255,255,255,0.03)";
 const FACET_BORDER = "rgba(255,255,255,0.07)";
@@ -158,6 +162,86 @@ export default function SearchPage({onAddToCart}: {onAddToCart: (product: Produc
         brands.length || categories.length || types.length || levels.length ||
         genders.length || inStockOnly || priceRange[0] > 0 || priceRange[1] < 900;
 
+    const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
+
+    const filterPanelContent = (
+        <>
+            <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-between", mb: 2 }}>
+                <Typography sx={{ fontSize: "0.78rem", fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase", color: "rgba(255,255,255,0.4)" }}>
+                    Filters
+                </Typography>
+                {hasFilters && (
+                    <Button onClick={clearAll} sx={{ fontSize: "0.72rem", color: "rgba(255,255,255,0.35)", p: 0, minWidth: 0, textTransform: "none", "&:hover": { color: "#fff", bgcolor: "transparent" } }}>
+                        Clear all
+                    </Button>
+                )}
+            </Box>
+
+            <Accordion defaultExpanded disableGutters sx={accordionSx}>
+                <AccordionSummary expandIcon={<ExpandMoreIcon sx={{ color: "rgba(255,255,255,0.4)", fontSize: 18 }} />} sx={accordionSummarySx}>
+                    <Typography sx={{ fontSize: "0.78rem", fontWeight: 600, letterSpacing: "0.1em", textTransform: "uppercase", color: "rgba(255,255,255,0.55)" }}>
+                        Price Range
+                    </Typography>
+                </AccordionSummary>
+                <AccordionDetails sx={{ px: 0, pt: 0, pb: 2 }}>
+                    <Slider
+                        value={priceRange}
+                        onChange={(_, v) => setPriceRange(v as [number, number])}
+                        min={0}
+                        max={900}
+                        step={10}
+                        valueLabelDisplay="auto"
+                        valueLabelFormat={(v) => `$${v}`}
+                        sx={{
+                            color: "#fff",
+                            "& .MuiSlider-thumb": { bgcolor: "#fff", width: 14, height: 14 },
+                            "& .MuiSlider-track": { bgcolor: "#fff", border: "none" },
+                            "& .MuiSlider-rail": { bgcolor: "rgba(255,255,255,0.15)" },
+                            "& .MuiSlider-valueLabel": { bgcolor: "rgba(30,32,40,0.95)", fontSize: "0.72rem" },
+                        }}
+                    />
+                    <Box sx={{ display: "flex", justifyContent: "space-between", mt: 0.5 }}>
+                        <Typography sx={{ fontSize: "0.78rem", color: "rgba(255,255,255,0.4)" }}>${priceRange[0]}</Typography>
+                        <Typography sx={{ fontSize: "0.78rem", color: "rgba(255,255,255,0.4)" }}>${priceRange[1]}</Typography>
+                    </Box>
+                </AccordionDetails>
+            </Accordion>
+
+            <Accordion defaultExpanded disableGutters sx={accordionSx}>
+                <AccordionSummary expandIcon={<ExpandMoreIcon sx={{ color: "rgba(255,255,255,0.4)", fontSize: 18 }} />} sx={accordionSummarySx}>
+                    <Typography sx={{ fontSize: "0.78rem", fontWeight: 600, letterSpacing: "0.1em", textTransform: "uppercase", color: "rgba(255,255,255,0.55)" }}>
+                        Availability
+                    </Typography>
+                </AccordionSummary>
+                <AccordionDetails sx={{ px: 0, pt: 0, pb: 1 }}>
+                    <FormControlLabel
+                        control={
+                            <Switch
+                                checked={inStockOnly}
+                                onChange={(e) => setInStockOnly(e.target.checked)}
+                                size="small"
+                                sx={{
+                                    "& .MuiSwitch-switchBase.Mui-checked": { color: "#fff" },
+                                    "& .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track": { bgcolor: "rgba(255,255,255,0.5)" },
+                                    "& .MuiSwitch-track": { bgcolor: "rgba(255,255,255,0.15)" },
+                                }}
+                            />
+                        }
+                        label={<Typography sx={{ fontSize: "0.85rem", color: "rgba(255,255,255,0.55)" }}>In stock only</Typography>}
+                        labelPlacement="end"
+                        sx={{ mx: 0, justifyContent: "flex-start" }}
+                    />
+                </AccordionDetails>
+            </Accordion>
+
+            <CheckFacet label="Category" options={allCategories} selected={categories} onChange={setCategories} />
+            <CheckFacet label="Type" options={allTypes} selected={types} onChange={setTypes} />
+            <CheckFacet label="Brand" options={allBrands} selected={brands} onChange={setBrands} />
+            <CheckFacet label="Skill Level" options={allLevels} selected={levels} onChange={setLevels} />
+            <CheckFacet label="Gender" options={allGenders} selected={genders} onChange={setGenders} />
+        </>
+    );
+
     return (
         <Box sx={{ bgcolor: "#0a0c10", minHeight: "100vh", color: "#fff", display: "flex", flexDirection: "column" }}>
 
@@ -178,6 +262,23 @@ export default function SearchPage({onAddToCart}: {onAddToCart: (product: Produc
                 <Typography sx={{ fontSize: "0.85rem", color: "rgba(255,255,255,0.4)" }}>
                     {filtered.length} {filtered.length === 1 ? "result" : "results"}
                 </Typography>
+
+                <Button
+                    onClick={() => setMobileFiltersOpen(true)}
+                    startIcon={<FilterListIcon sx={{ fontSize: 18 }} />}
+                    sx={{
+                        display: { xs: "flex", md: "none" },
+                        ml: "auto",
+                        fontSize: "0.78rem",
+                        color: hasFilters ? "#fff" : "rgba(255,255,255,0.55)",
+                        borderColor: "rgba(255,255,255,0.2)",
+                        textTransform: "none",
+                    }}
+                    variant="outlined"
+                    size="small"
+                >
+                    Filters{hasFilters ? ` (${[brands.length, categories.length, types.length, levels.length, genders.length].reduce((a, b) => a + b, 0) + (inStockOnly ? 1 : 0)})` : ""}
+                </Button>
             </Stack>
 
             <Box sx={{ display: "flex", flex: 1, minHeight: 0 }}>
@@ -199,80 +300,7 @@ export default function SearchPage({onAddToCart}: {onAddToCart: (product: Produc
                         height: "calc(100vh - 64px - 97px)",
                     }}
                 >
-                    <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-between", mb: 2 }}>
-                        <Typography sx={{ fontSize: "0.78rem", fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase", color: "rgba(255,255,255,0.4)" }}>
-                            Filters
-                        </Typography>
-                        {hasFilters && (
-                            <Button onClick={clearAll} sx={{ fontSize: "0.72rem", color: "rgba(255,255,255,0.35)", p: 0, minWidth: 0, textTransform: "none", "&:hover": { color: "#fff", bgcolor: "transparent" } }}>
-                                Clear all
-                            </Button>
-                        )}
-                    </Box>
-
-                    <Accordion defaultExpanded disableGutters sx={accordionSx}>
-                        <AccordionSummary expandIcon={<ExpandMoreIcon sx={{ color: "rgba(255,255,255,0.4)", fontSize: 18 }} />} sx={accordionSummarySx}>
-                            <Typography sx={{ fontSize: "0.78rem", fontWeight: 600, letterSpacing: "0.1em", textTransform: "uppercase", color: "rgba(255,255,255,0.55)" }}>
-                                Price Range
-                            </Typography>
-                        </AccordionSummary>
-                        <AccordionDetails sx={{ px: 0, pt: 0, pb: 2 }}>
-                            <Slider
-                                value={priceRange}
-                                onChange={(_, v) => setPriceRange(v as [number, number])}
-                                min={0}
-                                max={900}
-                                step={10}
-                                valueLabelDisplay="auto"
-                                valueLabelFormat={(v) => `$${v}`}
-                                sx={{
-                                    color: "#fff",
-                                    "& .MuiSlider-thumb": { bgcolor: "#fff", width: 14, height: 14 },
-                                    "& .MuiSlider-track": { bgcolor: "#fff", border: "none" },
-                                    "& .MuiSlider-rail": { bgcolor: "rgba(255,255,255,0.15)" },
-                                    "& .MuiSlider-valueLabel": { bgcolor: "rgba(30,32,40,0.95)", fontSize: "0.72rem" },
-                                }}
-                            />
-                            <Box sx={{ display: "flex", justifyContent: "space-between", mt: 0.5 }}>
-                                <Typography sx={{ fontSize: "0.78rem", color: "rgba(255,255,255,0.4)" }}>${priceRange[0]}</Typography>
-                                <Typography sx={{ fontSize: "0.78rem", color: "rgba(255,255,255,0.4)" }}>${priceRange[1]}</Typography>
-                            </Box>
-                        </AccordionDetails>
-                    </Accordion>
-
-                    <Accordion defaultExpanded disableGutters sx={accordionSx}>
-                        <AccordionSummary expandIcon={<ExpandMoreIcon sx={{ color: "rgba(255,255,255,0.4)", fontSize: 18 }} />} sx={accordionSummarySx}>
-                            <Typography sx={{ fontSize: "0.78rem", fontWeight: 600, letterSpacing: "0.1em", textTransform: "uppercase", color: "rgba(255,255,255,0.55)" }}>
-                                Availability
-                            </Typography>
-                        </AccordionSummary>
-                        <AccordionDetails sx={{ px: 0, pt: 0, pb: 1 }}>
-                            <FormControlLabel
-                                control={
-                                    <Switch
-                                        checked={inStockOnly}
-                                        onChange={(e) => setInStockOnly(e.target.checked)}
-                                        size="small"
-                                        sx={{
-                                            "& .MuiSwitch-switchBase.Mui-checked": { color: "#fff" },
-                                            "& .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track": { bgcolor: "rgba(255,255,255,0.5)" },
-                                            "& .MuiSwitch-track": { bgcolor: "rgba(255,255,255,0.15)" },
-                                        }}
-                                    />
-                                }
-                                label={<Typography sx={{ fontSize: "0.85rem", color: "rgba(255,255,255,0.55)" }}>In stock only</Typography>}
-                                labelPlacement="end"
-                                sx={{ mx: 0, justifyContent: "flex-start" }}
-                            />
-                        </AccordionDetails>
-
-                    </Accordion>
-
-                    <CheckFacet label="Category" options={allCategories} selected={categories} onChange={setCategories} />
-                    <CheckFacet label="Type" options={allTypes} selected={types} onChange={setTypes} />
-                    <CheckFacet label="Brand" options={allBrands} selected={brands} onChange={setBrands} />
-                    <CheckFacet label="Skill Level" options={allLevels} selected={levels} onChange={setLevels} />
-                    <CheckFacet label="Gender" options={allGenders} selected={genders} onChange={setGenders} />
+                    {filterPanelContent}
                 </Box>
 
                 <Box
@@ -310,6 +338,33 @@ export default function SearchPage({onAddToCart}: {onAddToCart: (product: Produc
                     )}
                 </Box>
             </Box>
+            <Drawer
+                anchor="left"
+                open={mobileFiltersOpen}
+                onClose={() => setMobileFiltersOpen(false)}
+                sx={{ display: { xs: "block", md: "none" } }}
+                slotProps={{
+                    paper: {
+                        sx: {
+                            width: 280,
+                            bgcolor: "#0a0c10",
+                            color: "#fff",
+                            px: 3,
+                            py: 3,
+                        },
+                    },
+                }}
+            >
+                <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-between", mb: 2 }}>
+                    <Typography sx={{ fontSize: "0.78rem", fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase", color: "rgba(255,255,255,0.4)" }}>
+                        Filters
+                    </Typography>
+                    <IconButton onClick={() => setMobileFiltersOpen(false)} size="small" sx={{ color: "rgba(255,255,255,0.6)" }}>
+                        <CloseIcon fontSize="small" />
+                    </IconButton>
+                </Box>
+                {filterPanelContent}
+            </Drawer>
         </Box>
     );
 }

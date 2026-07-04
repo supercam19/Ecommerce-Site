@@ -1,98 +1,20 @@
-import { useState } from "react";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
-import Card from "@mui/material/Card";
-import CardMedia from "@mui/material/CardMedia";
-import CardContent from "@mui/material/CardContent";
-import CardActionArea from "@mui/material/CardActionArea";
-import Chip from "@mui/material/Chip";
 import Container from "@mui/material/Container";
 import { alpha } from "@mui/material/styles";
 import { MOCK_PRODUCTS } from "../data/products";
 import type {Product} from "../data/products";
-
-type Category = "All Equipment" | "Skiing" | "Snowboarding";
-
-interface CategoryCard {
-    label: string;
-    category: Category | "All Equipment";
-    image: string;
-    href: string;
-}
-
-const CATEGORY_CARDS: CategoryCard[] = [
-    {
-        label: "All Equipment",
-        category: "All Equipment",
-        image: "https://images.unsplash.com/photo-1551698618-1dfe5d97d256?w=600&q=80",
-        href: "/browse",
-    },
-    {
-        label: "Skiing",
-        category: "Skiing",
-        image: "https://images.unsplash.com/photo-1605540436563-5bca919ae766?w=600&q=80",
-        href: "/browse/skiing",
-    },
-    {
-        label: "Snowboarding",
-        category: "Snowboarding",
-        image: "https://images.unsplash.com/photo-1453342664588-4e5472e64e2e?w=600&q=80",
-        href: "/browse/snowboarding",
-    },
-];
-
-const ALL_CARDS: CategoryCard[] = [
-    {
-        label: "All Equipment",
-        category: "All Equipment",
-        image: "https://images.unsplash.com/photo-1551698618-1dfe5d97d256?w=600&q=80",
-        href: "/browse",
-    },
-    {
-        label: "Skiing",
-        category: "Skiing",
-        image: "https://images.unsplash.com/photo-1605540436563-5bca919ae766?w=600&q=80",
-        href: "/browse/skiing",
-    },
-    {
-        label: "Snowboarding",
-        category: "Snowboarding",
-        image: "https://images.unsplash.com/photo-1453342664588-4e5472e64e2e?w=600&q=80",
-        href: "/browse/snowboarding",
-    },
-    {
-        label: "Ski Boots",
-        category: "Skiing",
-        image: "https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=600&q=80",
-        href: "/browse/ski-boots",
-    },
-    {
-        label: "Helmets",
-        category: "All Equipment",
-        image: "https://images.unsplash.com/photo-1516967124798-10656f7de543?w=600&q=80",
-        href: "/browse/helmets",
-    },
-    {
-        label: "Snowboard Boots",
-        category: "Snowboarding",
-        image: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&q=80",
-        href: "/browse/snowboard-boots",
-    },
-];
+import ProductCard from "../components/ProductCard";
 
 const LATEST_ARRIVALS: Product[] = MOCK_PRODUCTS.slice(0, 4);
 
-const CATEGORIES: Category[] = ["All Equipment", "Skiing", "Snowboarding"];
+const BEST_DISCOUNTS: Product[] = MOCK_PRODUCTS
+    .filter((product) => product.discount)
+    .sort((a, b) => (b.discount ?? 0) - (a.discount ?? 0))
+    .slice(0, 4);
 
-export default function Home() {
-    const [activeCategory, setActiveCategory] = useState<Category>("All Equipment");
-
-    const filteredCards =
-        activeCategory === "All Equipment"
-            ? ALL_CARDS
-            : ALL_CARDS.filter((c) => c.category === activeCategory);
-
+export default function Home({ onAddToCart }: Readonly<{ onAddToCart: (product: Product) => void }>) {
     return (
         <Box sx={{ bgcolor: (theme) => theme.brand.gray, minHeight: "100vh", color: "#fff" }}>
             <Box
@@ -226,7 +148,7 @@ export default function Home() {
                 </Container>
             </Box>
 
-            {/* ── BROWSE BY CATEGORY ── */}
+            {/* ── BEST DISCOUNTS ── */}
             <Box
                 sx={{
                     width: "100%",
@@ -234,142 +156,84 @@ export default function Home() {
                     py: { xs: 8, md: 12 },
                 }}
             >
-                <Container maxWidth="xl">
-                    <Typography
-                        variant="overline"
-                        sx={{
-                            display: "block",
-                            textAlign: "center",
-                            color: "rgba(255,255,255,0.35)",
-                            letterSpacing: "0.22em",
-                            fontSize: "0.68rem",
-                            mb: 1,
-                        }}
-                    >
-                        Shop By
-                    </Typography>
-                    <Typography
-                        sx={{
-                            textAlign: "center",
-                            fontWeight: 700,
-                            fontSize: { xs: "1.6rem", md: "2.2rem" },
-                            letterSpacing: "-0.02em",
-                            mb: 4,
-                        }}
-                    >
-                        Categories
-                    </Typography>
-
+                <Container maxWidth="lg">
                     <Box
                         sx={{
                             display: "flex",
-                            justifyContent: "center",
-                            gap: 1,
+                            alignItems: "flex-end",
+                            justifyContent: "space-between",
                             mb: 6,
                             flexWrap: "wrap",
+                            gap: 2,
                         }}
                     >
-                        {CATEGORIES.map((cat) => {
-                            const active = cat === activeCategory;
-                            return (
-                                <Chip
-                                    key={cat}
-                                    label={cat}
-                                    onClick={() => setActiveCategory(cat)}
-                                    sx={{
-                                        px: 2,
-                                        py: 2.5,
-                                        fontSize: "0.82rem",
-                                        fontWeight: 600,
-                                        letterSpacing: "0.04em",
-                                        borderRadius: "100px",
-                                        cursor: "pointer",
-                                        border: "1px solid",
-                                        borderColor: active
-                                            ? "rgba(255,255,255,0.7)"
-                                            : "rgba(255,255,255,0.12)",
-                                        bgcolor: active
-                                            ? "rgba(255,255,255,0.12)"
-                                            : "transparent",
-                                        backdropFilter: "blur(10px)",
-                                        color: active ? "#fff" : "rgba(255,255,255,0.5)",
-                                        transition: "all 0.2s ease",
-                                        "&:hover": {
-                                            bgcolor: "rgba(255,255,255,0.1)",
-                                            borderColor: "rgba(255,255,255,0.4)",
-                                            color: "#fff",
-                                        },
-                                    }}
-                                />
-                            );
-                        })}
+                        <Box>
+                            <Typography
+                                variant="overline"
+                                sx={{
+                                    display: "block",
+                                    color: "rgba(255,255,255,0.35)",
+                                    letterSpacing: "0.22em",
+                                    fontSize: "0.68rem",
+                                    mb: 1,
+                                }}
+                            >
+                                Save Big
+                            </Typography>
+                            <Typography
+                                sx={{
+                                    fontWeight: 700,
+                                    fontSize: { xs: "1.6rem", md: "2.2rem" },
+                                    letterSpacing: "-0.02em",
+                                }}
+                            >
+                                Best Discounts
+                            </Typography>
+                        </Box>
+                        <Button
+                            variant="text"
+                            href="/search"
+                            sx={{
+                                color: "rgba(255,255,255,0.5)",
+                                fontSize: "0.8rem",
+                                letterSpacing: "0.06em",
+                                textTransform: "uppercase",
+                                fontWeight: 600,
+                                "&:hover": { color: "#fff", bgcolor: "transparent" },
+                            }}
+                        >
+                            View All →
+                        </Button>
                     </Box>
 
                     <Box
                         sx={{
                             display: "flex",
-                            gap: 2.5,
+                            gap: 3,
                             overflowX: "auto",
                             pb: 2,
-                            px: 1,
                             scrollSnapType: "x mandatory",
-                            "&::-webkit-scrollbar": { height: 4 },
+                            "&::-webkit-scrollbar": { height: 6 },
                             "&::-webkit-scrollbar-track": { bgcolor: "rgba(255,255,255,0.05)" },
                             "&::-webkit-scrollbar-thumb": {
                                 bgcolor: "rgba(255,255,255,0.15)",
-                                borderRadius: 2,
+                                borderRadius: 3,
                             },
                         }}
                     >
-                        {filteredCards.map((card) => (
-                            <Card
-                                key={card.href}
+                        {BEST_DISCOUNTS.map((product) => (
+                            <Box
+                                key={product.id}
                                 sx={{
-                                    minWidth: { xs: 240, sm: 280 },
-                                    flexShrink: 0,
+                                    display: "flex",
+                                    flex: "0 0 auto",
+                                    width: { xs: 260, sm: 280 },
                                     scrollSnapAlign: "start",
-                                    bgcolor: "#151820",
-                                    border: "1px solid rgba(255,255,255,0.06)",
-                                    borderRadius: 2,
-                                    overflow: "hidden",
-                                    transition: "transform 0.25s ease, border-color 0.25s ease",
-                                    "&:hover": {
-                                        transform: "translateY(-4px)",
-                                        borderColor: "rgba(255,255,255,0.2)",
-                                    },
+                                    "& > *": { width: "100%" },
                                 }}
                             >
-                                <CardActionArea component="a" href={card.href} sx={{ height: "100%" }}>
-                                    <CardMedia
-                                        component="img"
-                                        height="200"
-                                        image={card.image}
-                                        alt={card.label}
-                                        sx={{ objectFit: "cover", filter: "brightness(0.8)" }}
-                                    />
-                                    <CardContent sx={{ px: 2.5, py: 2 }}>
-                                        <Typography
-                                            sx={{
-                                                fontWeight: 700,
-                                                fontSize: "1rem",
-                                                color: "#fff",
-                                                letterSpacing: "-0.01em",
-                                            }}
-                                        >
-                                            {card.label}
-                                        </Typography>
-                                        <Typography
-                                            sx={{
-                                                fontSize: "0.78rem",
-                                                color: "rgba(255,255,255,0.4)",
-                                                mt: 0.5,
-                                            }}
-                                        >
-                                            Shop collection →
-                                        </Typography>
-                                    </CardContent>
-                                </CardActionArea>
-                            </Card>
+                                <ProductCard product={product} onAddToCart={onAddToCart} />
+                            </Box>
                         ))}
                     </Box>
                 </Container>
@@ -420,7 +284,7 @@ export default function Home() {
                         </Box>
                         <Button
                             variant="text"
-                            href="/browse"
+                            href="/search"
                             sx={{
                                 color: "rgba(255,255,255,0.5)",
                                 fontSize: "0.8rem",
@@ -436,117 +300,32 @@ export default function Home() {
 
                     <Box
                         sx={{
-                            display: "grid",
-                            gridTemplateColumns: {
-                                xs: "1fr",
-                                sm: "1fr 1fr",
-                                md: "repeat(4, 1fr)",
-                            },
+                            display: "flex",
                             gap: 3,
+                            overflowX: "auto",
+                            pb: 2,
+                            scrollSnapType: "x mandatory",
+                            "&::-webkit-scrollbar": { height: 6 },
+                            "&::-webkit-scrollbar-track": { bgcolor: "rgba(255,255,255,0.05)" },
+                            "&::-webkit-scrollbar-thumb": {
+                                bgcolor: "rgba(255,255,255,0.15)",
+                                borderRadius: 3,
+                            },
                         }}
                     >
                         {LATEST_ARRIVALS.map((item) => (
-                            <Card
+                            <Box
                                 key={item.id}
                                 sx={{
-                                    bgcolor: "#111318",
-                                    border: "1px solid rgba(255,255,255,0.06)",
-                                    borderRadius: 2,
-                                    overflow: "hidden",
-                                    transition: "transform 0.25s ease, border-color 0.25s ease",
-                                    "&:hover": {
-                                        transform: "translateY(-4px)",
-                                        borderColor: "rgba(255,255,255,0.18)",
-                                    },
+                                    display: "flex",
+                                    flex: "0 0 auto",
+                                    width: { xs: 260, sm: 280 },
+                                    scrollSnapAlign: "start",
+                                    "& > *": { width: "100%" },
                                 }}
                             >
-                                <CardActionArea component="a" href={"/product/" + item.id}>
-                                    <Box sx={{ position: "relative" }}>
-                                        <CardMedia
-                                            component="img"
-                                            height="220"
-                                            image={item.image}
-                                            alt={item.name}
-                                            sx={{ objectFit: "cover", filter: "brightness(0.75)" }}
-                                        />
-                                        <Box
-                                            sx={{
-                                                position: "absolute",
-                                                top: 12,
-                                                left: 12,
-                                                px: 1.5,
-                                                py: 0.4,
-                                                borderRadius: "100px",
-                                                bgcolor: alpha("#fff", 0.12),
-                                                backdropFilter: "blur(8px)",
-                                                border: "1px solid rgba(255,255,255,0.18)",
-                                            }}
-                                        >
-                                            <Typography
-                                                sx={{
-                                                    fontSize: "0.68rem",
-                                                    fontWeight: 600,
-                                                    letterSpacing: "0.1em",
-                                                    color: "rgba(255,255,255,0.85)",
-                                                    textTransform: "uppercase",
-                                                }}
-                                            >
-                                                {item.category}
-                                            </Typography>
-                                        </Box>
-                                    </Box>
-                                    <CardContent sx={{ px: 2, py: 2 }}>
-                                        <Typography
-                                            sx={{
-                                                fontSize: "0.72rem",
-                                                color: "rgba(255,255,255,0.38)",
-                                                letterSpacing: "0.08em",
-                                                textTransform: "uppercase",
-                                                mb: 0.5,
-                                            }}
-                                        >
-                                            {item.brand}
-                                        </Typography>
-                                        <Typography
-                                            sx={{
-                                                fontWeight: 600,
-                                                fontSize: "0.95rem",
-                                                color: "#fff",
-                                                letterSpacing: "-0.01em",
-                                                mb: 1.5,
-                                            }}
-                                        >
-                                            {item.name}
-                                        </Typography>
-                                        <Box
-                                            sx={{
-                                                display: "flex",
-                                                alignItems: "center",
-                                                justifyContent: "space-between",
-                                            }}
-                                        >
-                                            <Typography
-                                                sx={{
-                                                    fontWeight: 700,
-                                                    fontSize: "1.05rem",
-                                                    color: "#fff",
-                                                }}
-                                            >
-                                                {item.price}
-                                            </Typography>
-                                            <Typography
-                                                sx={{
-                                                    fontSize: "0.75rem",
-                                                    color: "rgba(255,255,255,0.35)",
-                                                    letterSpacing: "0.04em",
-                                                }}
-                                            >
-                                                View →
-                                            </Typography>
-                                        </Box>
-                                    </CardContent>
-                                </CardActionArea>
-                            </Card>
+                                <ProductCard product={item} onAddToCart={onAddToCart} />
+                            </Box>
                         ))}
                     </Box>
                 </Container>
