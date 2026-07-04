@@ -12,13 +12,13 @@ interface Section {
 const SECTIONS: Section[] = [
     {
         heading: "Built for the Mountain",
-        body: "Atlas Sports Equipment was founded in 2009 by a group of Whistler locals who were tired of choosing between gear that performed and gear that lasted. We set out to build an equipment shop that took both seriously — sourcing only from brands whose engineers spend more time on snow than in boardrooms. Fifteen years later, that philosophy hasn't changed, even if our catalogue has grown from a single rack of demo skis to one of Canada's most respected winter sports retailers.",
+        body: "Atlas Sports Equipment was founded in 2009 by a group of Whistler locals who were tired of choosing between gear that performed and gear that lasted. We set out to build an equipment shop that took both seriously, sourcing only from brands whose engineers spend more time on snow than in boardrooms. Fifteen years later, that philosophy hasn't changed, even if our catalogue has grown from a single rack of demo skis to one of Canada's most respected winter sports retailers.",
         image: "https://images.unsplash.com/photo-1551698618-1dfe5d97d256?w=900&q=80",
         alt: "Skier on a steep mountain slope",
     },
     {
         heading: "Gear We Believe In",
-        body: "Every product on Atlas carries our personal endorsement. Our buying team tests submissions throughout the season across a range of conditions — groomed runs, backcountry powder, and everything in between. If a ski doesn't hold an edge on hard pack, it doesn't make the shelf. If a boot runs cold below minus twenty, same story. We turn down more brands than we carry, and we think that's exactly how it should be.",
+        body: "Every product on Atlas carries our personal endorsement. Our buying team tests submissions throughout the season across a range of conditions. Groomed runs, backcountry powder, and everything in between is tested to ensure you get only the best equipment. If a ski doesn't hold an edge on hard pack, it doesn't make the shelf. If a boot runs cold below minus twenty, same story. We turn down more brands than we carry, and we think that's exactly how it should be.",
         image: "/ski2.png",
         alt: "Close-up of ski equipment",
     },
@@ -30,7 +30,7 @@ const SECTIONS: Section[] = [
     },
     {
         heading: "Outfitting Every Level",
-        body: "Atlas started as a shop for experts, but we've spent the last decade making sure beginners feel just as welcome. Our fit guides, rental packages, and beginner-specific collections exist because we believe more people on the hill is always a good thing. Whether you're picking up your first pair of rental boots or hunting a pro-model twin tip, you'll find what you need here — without being made to feel like you're in the wrong place.",
+        body: "Atlas started as a shop for experts, but we've spent the last decade making sure beginners feel just as welcome. Our fit guides, and beginner-specific collections exist because we believe more people on the hill is always a good thing. Whether you're picking up your first pair of ski boots or hunting a pro-model twin tip, you'll find what you need here.",
         image: "https://images.unsplash.com/photo-1605540436563-5bca919ae766?w=900&q=80",
         alt: "Ski boots on snow",
     },

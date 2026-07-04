@@ -121,7 +121,7 @@ export default function Home({ onAddToCart }: Readonly<{ onAddToCart: (product: 
                                 textAlign: "left",
                             }}
                         >
-                            Pro-grade skis, boards, boots, and gear — curated for every level,
+                            Pro-grade skis, boards, boots, and gear. Curated for every level,
                             from first-timers to backcountry regulars.
                         </Typography>
                         <Box sx={{width: "100%", display: "flex", justifyContent: "left", gap: 2, mb: 4,}}>
