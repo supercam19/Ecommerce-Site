@@ -72,7 +72,7 @@ export default function ProductCard({product, onAddToCart}: Readonly<Props>) {
                                 px: 1.25,
                                 py: 0.4,
                                 borderRadius: 1,
-                                bgcolor: "#e03d3d",
+                                bgcolor: (theme) => theme.brand.orange,
                             }}
                         >
                             <Typography sx={{ fontSize: "0.72rem", fontWeight: 700, letterSpacing: "0.06em", color: "#fff" }}>
