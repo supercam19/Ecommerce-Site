@@ -6,6 +6,7 @@ import { alpha } from "@mui/material/styles";
 import { MOCK_PRODUCTS } from "../data/products";
 import type {Product} from "../data/products";
 import ProductCard from "../components/ProductCard";
+import {useNavigate} from "react-router-dom";
 
 const LATEST_ARRIVALS: Product[] = MOCK_PRODUCTS.slice(0, 4);
 
@@ -15,6 +16,8 @@ const BEST_DISCOUNTS: Product[] = MOCK_PRODUCTS
     .slice(0, 4);
 
 export default function Home({ onAddToCart }: Readonly<{ onAddToCart: (product: Product) => void }>) {
+    const navigate = useNavigate();
+
     return (
         <Box sx={{ bgcolor: (theme) => theme.brand.gray, minHeight: "100vh", color: "#fff" }}>
             <Box
@@ -124,7 +127,7 @@ export default function Home({ onAddToCart }: Readonly<{ onAddToCart: (product: 
                         <Box sx={{width: "100%", display: "flex", justifyContent: "left", gap: 2, mb: 4,}}>
                             <Button
                                 variant="contained"
-                                href="/browse"
+                                onClick={() => navigate("/search")}
                                 sx={{
                                     bgcolor: "#fff",
                                     color: "#0a0c10",
@@ -192,7 +195,7 @@ export default function Home({ onAddToCart }: Readonly<{ onAddToCart: (product: 
                         </Box>
                         <Button
                             variant="text"
-                            href="/search"
+                            onClick={() => navigate("/search")}
                             sx={{
                                 color: "rgba(255,255,255,0.5)",
                                 fontSize: "0.8rem",
@@ -284,7 +287,7 @@ export default function Home({ onAddToCart }: Readonly<{ onAddToCart: (product: 
                         </Box>
                         <Button
                             variant="text"
-                            href="/search"
+                            onClick={() => navigate("/search")}
                             sx={{
                                 color: "rgba(255,255,255,0.5)",
                                 fontSize: "0.8rem",
