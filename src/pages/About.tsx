@@ -12,7 +12,7 @@ interface Section {
 const SECTIONS: Section[] = [
     {
         heading: "Built for the Mountain",
-        body: "Atlas Sports Gear was founded in 2009 by a group of Whistler locals who were tired of choosing between gear that performed and gear that lasted. We set out to build an equipment shop that took both seriously — sourcing only from brands whose engineers spend more time on snow than in boardrooms. Fifteen years later, that philosophy hasn't changed, even if our catalogue has grown from a single rack of demo skis to one of Canada's most respected winter sports retailers.",
+        body: "Atlas Sports Equipment was founded in 2009 by a group of Whistler locals who were tired of choosing between gear that performed and gear that lasted. We set out to build an equipment shop that took both seriously — sourcing only from brands whose engineers spend more time on snow than in boardrooms. Fifteen years later, that philosophy hasn't changed, even if our catalogue has grown from a single rack of demo skis to one of Canada's most respected winter sports retailers.",
         image: "https://images.unsplash.com/photo-1551698618-1dfe5d97d256?w=900&q=80",
         alt: "Skier on a steep mountain slope",
     },
@@ -94,7 +94,7 @@ export default function About() {
                             textTransform: "uppercase",
                         }}
                     >
-                        Atlas Sports Gear
+                        Atlas Sports Equipment
                     </Typography>
                 </Container>
             </Box>
