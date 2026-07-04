@@ -19,19 +19,19 @@ const SECTIONS: Section[] = [
     {
         heading: "Gear We Believe In",
         body: "Every product on Atlas carries our personal endorsement. Our buying team tests submissions throughout the season across a range of conditions — groomed runs, backcountry powder, and everything in between. If a ski doesn't hold an edge on hard pack, it doesn't make the shelf. If a boot runs cold below minus twenty, same story. We turn down more brands than we carry, and we think that's exactly how it should be.",
-        image: "https://images.unsplash.com/photo-1605540436563-5bca919ae766?w=900&q=80",
+        image: "/ski2.png",
         alt: "Close-up of ski equipment",
     },
     {
         heading: "People Who Ride",
         body: "Our team is made up entirely of skiers and snowboarders who use the gear themselves. When you ask us about a binding's release threshold or how a board feels in heavy spring slush, you'll get a real answer from someone who found out the hard way. We don't script our customer support, and we don't hire people who haven't been on snow. It's a small thing that makes a big difference when you're making a $600 purchase decision.",
-        image: "https://images.unsplash.com/photo-1453342664588-4e5472e64e2e?w=900&q=80",
+        image: "/ski1.png",
         alt: "Snowboarder mid-run",
     },
     {
         heading: "Outfitting Every Level",
         body: "Atlas started as a shop for experts, but we've spent the last decade making sure beginners feel just as welcome. Our fit guides, rental packages, and beginner-specific collections exist because we believe more people on the hill is always a good thing. Whether you're picking up your first pair of rental boots or hunting a pro-model twin tip, you'll find what you need here — without being made to feel like you're in the wrong place.",
-        image: "https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=900&q=80",
+        image: "https://images.unsplash.com/photo-1605540436563-5bca919ae766?w=900&q=80",
         alt: "Ski boots on snow",
     },
 ];
