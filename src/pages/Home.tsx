@@ -9,21 +9,14 @@ import CardActionArea from "@mui/material/CardActionArea";
 import Chip from "@mui/material/Chip";
 import Container from "@mui/material/Container";
 import { alpha } from "@mui/material/styles";
+import { MOCK_PRODUCTS } from "../data/products";
+import type {Product} from "../data/products";
 
 type Category = "All Equipment" | "Skiing" | "Snowboarding";
 
 interface CategoryCard {
     label: string;
     category: Category | "All Equipment";
-    image: string;
-    href: string;
-}
-
-interface EquipmentItem {
-    name: string;
-    brand: string;
-    price: string;
-    tag: string;
     image: string;
     href: string;
 }
@@ -88,40 +81,7 @@ const ALL_CARDS: CategoryCard[] = [
     },
 ];
 
-const LATEST_ARRIVALS: EquipmentItem[] = [
-    {
-        name: "Blizzard Rustler 10",
-        brand: "Blizzard",
-        price: "$749",
-        tag: "Skis",
-        image: "https://images.unsplash.com/photo-1605540436563-5bca919ae766?w=500&q=80",
-        href: "/product/blizzard-rustler-10",
-    },
-    {
-        name: "Burton Custom X",
-        brand: "Burton",
-        price: "$629",
-        tag: "Snowboard",
-        image: "https://images.unsplash.com/photo-1453342664588-4e5472e64e2e?w=500&q=80",
-        href: "/product/burton-custom-x",
-    },
-    {
-        name: "Salomon S/Pro 130",
-        brand: "Salomon",
-        price: "$549",
-        tag: "Ski Boots",
-        image: "https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=500&q=80",
-        href: "/product/salomon-spro-130",
-    },
-    {
-        name: "Oakley MOD5",
-        brand: "Oakley",
-        price: "$199",
-        tag: "Helmet",
-        image: "https://images.unsplash.com/photo-1516967124798-10656f7de543?w=500&q=80",
-        href: "/product/oakley-mod5",
-    },
-];
+const LATEST_ARRIVALS: Product[] = MOCK_PRODUCTS.slice(0, 4);
 
 const CATEGORIES: Category[] = ["All Equipment", "Skiing", "Snowboarding"];
 
@@ -188,7 +148,7 @@ export default function Home() {
                                 pl: 2,
                             }}
                         >
-                            New Season · 2025 / 26
+                            New Season · 2026 / 27
                         </Typography>
 
                         <Typography
@@ -253,6 +213,7 @@ export default function Home() {
                                     px: 4,
                                     py: 1.5,
                                     borderRadius: 1,
+                                    boxShadow: (theme) => `6px 6px ${alpha(theme.brand.blue, 1)}`,
                                     "&:hover": {
                                         bgcolor: "rgba(255,255,255,0.88)",
                                     },
@@ -486,7 +447,7 @@ export default function Home() {
                     >
                         {LATEST_ARRIVALS.map((item) => (
                             <Card
-                                key={item.href}
+                                key={item.id}
                                 sx={{
                                     bgcolor: "#111318",
                                     border: "1px solid rgba(255,255,255,0.06)",
@@ -499,7 +460,7 @@ export default function Home() {
                                     },
                                 }}
                             >
-                                <CardActionArea component="a" href={item.href}>
+                                <CardActionArea component="a" href={"/product/" + item.id}>
                                     <Box sx={{ position: "relative" }}>
                                         <CardMedia
                                             component="img"
@@ -530,7 +491,7 @@ export default function Home() {
                                                     textTransform: "uppercase",
                                                 }}
                                             >
-                                                {item.tag}
+                                                {item.category}
                                             </Typography>
                                         </Box>
                                     </Box>

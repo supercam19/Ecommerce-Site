@@ -8,15 +8,22 @@ import IconButton from "@mui/material/IconButton";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import SearchIcon from "@mui/icons-material/Search";
 import { styled, alpha } from "@mui/material/styles";
+import {useNavigate} from "react-router-dom";
+import Badge from "@mui/material/Badge";
+import Typography from "@mui/material/Typography";
 
 interface NavLink {
     label: string;
     href: string;
 }
 
+interface Props {
+    cartSize?: number;
+}
+
 const NAV_LINKS: NavLink[] = [
     { label: "Home", href: "/" },
-    { label: "Products", href: "/products" },
+    { label: "Products", href: "/search" },
     { label: "About", href: "/about" },
     { label: "Contact", href: "/contact" },
 ];
@@ -39,17 +46,16 @@ const SearchWrapper = styled(Box)(({ theme }) => ({
     },
 }));
 
-const LogoPlaceholder = styled(Box)(({ theme }) => ({
-    width: 36,
-    height: 36,
-    borderRadius: theme.shape.borderRadius,
-    backgroundColor: alpha(theme.palette.common.white, 0.25),
-    border: `1.5px solid ${alpha(theme.palette.common.white, 0.4)}`,
-    flexShrink: 0,
-}));
-
-export default function Navbar() {
+export default function Navbar({ cartSize = 0 }: Readonly<Props>) {
     const [searchValue, setSearchValue] = useState("");
+    const navigate = useNavigate();
+
+    const handleSearch = () => {
+        navigate({
+            pathname: "/search",
+            search: `?q=${searchValue}`
+        });
+    }
 
     return (
         <AppBar
@@ -64,15 +70,35 @@ export default function Navbar() {
             }}
         >
             <Toolbar sx={{ gap: 2, px: { xs: 2, sm: 3 } }}>
-                <Box sx={{ display: "flex", alignItems: "center", gap: 1.5, mr: 2 }}>
-                    <img src="/logo.png" alt="Logo" width={48} height={48}/>
+                <Box sx={{ display: "flex", alignItems: "center", gap: 1.5 }}>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="49" height="40" viewBox="0 0 49 40" fill="none" id="Logo"> <g id="logomark"> <path d="M37.3947 40C43.8275 39.8689 49 34.6073 49 28.1389C49 24.9931 47.7512 21.9762 45.5282 19.7518L25.7895 0V12.2771C25.7895 14.3303 26.6046 16.2995 28.0556 17.7514L32.6795 22.3784L32.6921 22.3907L40.4452 30.149C40.697 30.4009 40.697 30.8094 40.4452 31.0613C40.1935 31.3133 39.7852 31.3133 39.5335 31.0613L36.861 28.3871H12.139L9.46655 31.0613C9.21476 31.3133 8.80654 31.3133 8.55476 31.0613C8.30297 30.8094 8.30297 30.4009 8.55475 30.149L16.3079 22.3907L16.3205 22.3784L20.9444 17.7514C22.3954 16.2995 23.2105 14.3303 23.2105 12.2771V0L3.47175 19.7518C1.24882 21.9762 0 24.9931 0 28.1389C0 34.6073 5.17252 39.8689 11.6053 40H37.3947Z" fill="#FF0A0A"/> </g> </svg>
+                    <Typography
+                        onClick={() => navigate("/")}
+                        sx={{
+                            fontFamily: "'Aquire', 'Impact', sans-serif",
+                            fontSize: "2rem",
+                            fontWeight: 700,
+                            letterSpacing: "0.05em",
+                            color: "#fff",
+                            textTransform: "uppercase",
+                            lineHeight: 1,
+                            cursor: "pointer",
+                            userSelect: "none",
+                            textShadow: "2px 2px 4px rgba(0,0,0,0.3)",
+                            "&:hover": {
+                                color: "rgba(255,255,255,0.85)",
+                            },
+                        }}
+                    >
+                        ATLAS
+                    </Typography>
                 </Box>
 
                 <Box sx={{ display: "flex", alignItems: "center", gap: 0.5, flexGrow: 1 }}>
                     {NAV_LINKS.map((link) => (
                         <Button
                             key={link.href}
-                            href={link.href}
+                            onClick={() => navigate(link.href)}
                             sx={{
                                 color: "rgba(255, 255, 255, 0.82)",
                                 fontWeight: 500,
@@ -92,11 +118,19 @@ export default function Navbar() {
                 </Box>
 
                 <SearchWrapper>
-                    <SearchIcon sx={{ color: "rgba(255,255,255,0.5)", fontSize: 18 }} />
+                    <SearchIcon
+                        onClick={handleSearch}
+                        sx={{ color: "rgba(255,255,255,0.5)", fontSize: 18, cursor: "pointer" }}
+                    />
                     <InputBase
                         placeholder="Search…"
                         value={searchValue}
                         onChange={(e) => setSearchValue(e.target.value)}
+                        onKeyDown={(e) => {
+                            if (e.key === "Enter") {
+                                handleSearch();
+                            }
+                        }}
                         inputProps={{ "aria-label": "search" }}
                         sx={{
                             color: "#fff",
@@ -108,6 +142,7 @@ export default function Navbar() {
                 </SearchWrapper>
 
                 <IconButton
+                    onClick={() => navigate("/cart")}
                     aria-label="shopping cart"
                     sx={{
                         color: "rgba(255,255,255,0.82)",
@@ -117,7 +152,24 @@ export default function Navbar() {
                         },
                     }}
                 >
-                    <ShoppingCartIcon fontSize="small" />
+                    <Badge
+                        badgeContent={cartSize}
+                        max={99}
+                        overlap="circular"
+                        sx={{
+                            "& .MuiBadge-badge": {
+                                bgcolor: (theme) => theme.brand.orange,
+                                color: "#fff",
+                                fontSize: "0.6rem",
+                                fontWeight: 700,
+                                minWidth: 16,
+                                height: 16,
+                                padding: "0 4px",
+                            },
+                        }}
+                    >
+                        <ShoppingCartIcon fontSize="small" />
+                    </Badge>
                 </IconButton>
             </Toolbar>
         </AppBar>
