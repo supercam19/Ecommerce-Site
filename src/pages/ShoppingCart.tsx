@@ -68,7 +68,7 @@ export default function ShoppingCart({ cartItems, setCartItems }: ShoppingCartPr
                         Your cart is empty
                     </Typography>
                     <Button
-                        href="/search"
+                        onClick={() => navigate("/search")}
                         variant="outlined"
                         sx={{
                             mt: 1,

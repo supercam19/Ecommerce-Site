@@ -82,7 +82,7 @@ function App() {
       <BrowserRouter>
           <Navbar cartSize={shoppingCart.reduce((sum, item) => sum + item.quantity, 0)}/>
           <Routes>
-            <Route path="/" element={<Home />} />
+            <Route path="/" element={<Home onAddToCart={handleAddToCart} />} />
               <Route path="/search" element={<SearchPage onAddToCart={handleAddToCart} />} />
               <Route path="/contact" element={<Contact />} />
               <Route path="/cart" element={<ShoppingCart cartItems={shoppingCart} setCartItems={setShoppingCart} />} />
