@@ -86,7 +86,7 @@ function App() {
               <Route path="/search" element={<SearchPage onAddToCart={handleAddToCart} />} />
               <Route path="/contact" element={<Contact />} />
               <Route path="/cart" element={<ShoppingCart cartItems={shoppingCart} setCartItems={setShoppingCart} />} />
-              <Route path="/checkout" element={<Checkout cartItems={shoppingCart} />} />
+              <Route path="/checkout" element={<Checkout cartItems={shoppingCart} setCartItems={setShoppingCart} />} />
               <Route path="/about" element={<About />} />
           </Routes>
           <Footer />

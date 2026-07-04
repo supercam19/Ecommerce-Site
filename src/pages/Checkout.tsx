@@ -8,6 +8,7 @@ import MenuItem from "@mui/material/MenuItem";
 import TaskAltIcon from "@mui/icons-material/TaskAlt";
 import { alpha } from "@mui/material/styles";
 import type { CartItem } from "./ShoppingCart";
+import {useNavigate} from "react-router-dom";
 
 const FIELD_SX = {
     "& .MuiOutlinedInput-root": {
@@ -70,6 +71,7 @@ interface PaymentForm {
 
 interface CheckoutProps {
     cartItems: CartItem[];
+    setCartItems: (items: CartItem[]) => void;
 }
 
 function isValidEmail(v: string) {
@@ -290,7 +292,7 @@ function OrderSummary({ cartItems }: { cartItems: CartItem[] }) {
     );
 }
 
-export default function Checkout({ cartItems }: CheckoutProps) {
+export default function Checkout({ cartItems, setCartItems }: CheckoutProps) {
     const [step, setStep] = useState<Step>("shipping");
 
     const [shipping, setShipping] = useState<ShippingForm>({
@@ -383,6 +385,7 @@ export default function Checkout({ cartItems }: CheckoutProps) {
     function handlePlaceOrder() {
         touchAllPayment();
         if (paymentValid) setStep("confirmation");
+        setCartItems([]);
     }
 
     function shippingField(field: keyof ShippingForm, label: string, props?: object) {
@@ -404,6 +407,8 @@ export default function Checkout({ cartItems }: CheckoutProps) {
     }
 
     const orderNumber = "ORD-" + Math.random().toString(36).slice(2, 9).toUpperCase();
+
+    const navigate = useNavigate();
 
     return (
         <Box sx={{ bgcolor: "#0a0c10", minHeight: "100vh", color: "#fff", px: { xs: 2, md: 5 }, py: 5 }}>
@@ -688,7 +693,29 @@ export default function Checkout({ cartItems }: CheckoutProps) {
                                 </Box>
 
                                 <Button
-                                    href="/"
+                                    onClick={() => navigate("/contact")}
+                                    variant="contained"
+                                    sx={{
+                                        bgcolor: (theme) => theme.brand.blue,
+                                        color: "#0a0a0a",
+                                        fontSize: "0.85rem",
+                                        letterSpacing: "0.04em",
+                                        textTransform: "none",
+                                        fontWeight: 700,
+                                        px: 4,
+                                        py: 1.25,
+                                        borderRadius: 999,
+                                        mb: 1.5,
+                                        "&:hover": {
+                                            bgcolor: (theme) => theme.brand.orange,
+                                        },
+                                    }}
+                                >
+                                    Share Your Feedback
+                                </Button>
+
+                                <Button
+                                    onClick={() => navigate("/")}
                                     sx={{
                                         color: "rgba(255,255,255,0.5)",
                                         fontSize: "0.8rem",
