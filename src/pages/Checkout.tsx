@@ -426,7 +426,7 @@ export default function Checkout({ cartItems, setCartItems }: CheckoutProps) {
                     </Typography>
                     <Box sx={{ display: "flex", flexDirection: "column", gap: 1.5, alignItems: "center" }}>
                         <Button
-                            onClick={() => navigate("/browse")}
+                            onClick={() => navigate("/search")}
                             sx={{
                                 bgcolor: "#fff",
                                 color: "#0a0c10",
