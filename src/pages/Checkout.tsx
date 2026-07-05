@@ -501,13 +501,13 @@ export default function Checkout({ cartItems, setCartItems }: CheckoutProps) {
                             >
                                 <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
                                     <Box>
-                                        <Typography sx={{ fontSize: "0.68rem", fontWeight: 700, letterSpacing: "0.14em", textTransform: "uppercase", color: "rgba(255,255,255,0.35)", mb: 0.5 }}>
+                                        <Typography sx={{ fontSize: "0.68rem", fontWeight: 700, letterSpacing: "0.14em", textTransform: "uppercase", color: "rgba(255,255,255,0.35)", mb: 0.5, textAlign: "left" }}>
                                             Ship to
                                         </Typography>
-                                        <Typography sx={{ fontSize: "0.88rem", color: "#fff" }}>
+                                        <Typography sx={{ fontSize: "0.88rem", color: "#fff", textAlign: "left" }}>
                                             {shipping.firstName} {shipping.lastName}
                                         </Typography>
-                                        <Typography sx={{ fontSize: "0.82rem", color: "rgba(255,255,255,0.45)" }}>
+                                        <Typography sx={{ fontSize: "0.82rem", color: "rgba(255,255,255,0.45)", textAlign: "left" }}>
                                             {shipping.address}{shipping.apt ? `, ${shipping.apt}` : ""}, {shipping.city}, {shipping.province} {shipping.postal}
                                         </Typography>
                                     </Box>
