@@ -5,6 +5,7 @@ import TextField from "@mui/material/TextField";
 import MenuItem from "@mui/material/MenuItem";
 import Button from "@mui/material/Button";
 import { alpha } from "@mui/material/styles";
+import ContactDetailsHelp from "../components/ContactDetailsHelp";
 
 const CONTACT_REASONS = [
     "Order Status & Tracking",
@@ -175,7 +176,7 @@ export default function Contact() {
                                 </Typography>
                             </Box>
                         ) : (
-                            <Box sx={{ px: { xs: 3, md: 5 }, pt: { xs: 3, md: 4 }, pb: { xs: 3, md: 4 } }}>
+                            <Box sx={{ px: { xs: 3, md: 5 }, pt: { xs: 3, md: 4 }, pb: { xs: 3, md: 4 }, position: "relative" }}>
                                 <Typography
                                     sx={{
                                         fontSize: "0.8rem",
@@ -240,7 +241,13 @@ export default function Contact() {
                                             </MenuItem>
                                         ))}
                                     </TextField>
-
+                                    <Box
+                                        sx={{
+                                            display: {xs: "block", md: "none"},
+                                        }}
+                                    >
+                                        <ContactDetailsHelp />
+                                    </Box>
                                     <TextField
                                         label="Details"
                                         multiline
@@ -288,6 +295,17 @@ export default function Contact() {
                                     >
                                         Send Message
                                     </Button>
+
+                                </Box>
+                                <Box
+                                    sx={{
+                                        position: "absolute",
+                                        right: { md: 8 },
+                                        bottom: 200,
+                                        display: { xs: "none", md: "block" },
+                                    }}
+                                >
+                                    <ContactDetailsHelp />
                                 </Box>
                             </Box>
                         )}
