@@ -410,6 +410,56 @@ export default function Checkout({ cartItems, setCartItems }: CheckoutProps) {
 
     const navigate = useNavigate();
 
+    if (cartItems.length === 0 && step !== "confirmation") {
+        return (
+            <Box sx={{ bgcolor: "#0a0c10", minHeight: "100vh", color: "#fff", display: "flex", alignItems: "center", justifyContent: "center", px: 3 }}>
+                <Box sx={{ textAlign: "center", maxWidth: 420 }}>
+                    <Typography sx={{ fontSize: "0.68rem", fontWeight: 700, letterSpacing: "0.22em", textTransform: "uppercase", color: "rgba(255,255,255,0.25)", mb: 2 }}>
+                        Nothing to check out
+                    </Typography>
+                    <Typography sx={{ fontSize: { xs: "1.5rem", md: "2rem" }, fontWeight: 700, letterSpacing: "-0.02em", mb: 2 }}>
+                        Your cart is empty
+                    </Typography>
+                    <Typography sx={{ fontSize: "0.88rem", color: "rgba(255,255,255,0.4)", lineHeight: 1.75, mb: 4 }}>
+                        Add at least one item to your cart before proceeding to checkout.
+                        Head to the shop to browse available equipment.
+                    </Typography>
+                    <Box sx={{ display: "flex", flexDirection: "column", gap: 1.5, alignItems: "center" }}>
+                        <Button
+                            onClick={() => navigate("/browse")}
+                            sx={{
+                                bgcolor: "#fff",
+                                color: "#0a0c10",
+                                fontWeight: 700,
+                                fontSize: "0.82rem",
+                                letterSpacing: "0.1em",
+                                textTransform: "uppercase",
+                                px: 4,
+                                py: 1.4,
+                                borderRadius: 1.5,
+                                "&:hover": { bgcolor: "rgba(255,255,255,0.88)" },
+                            }}
+                        >
+                            Browse Equipment
+                        </Button>
+                        <Button
+                            onClick={() => navigate("/cart")}
+                            sx={{
+                                color: "rgba(255,255,255,0.4)",
+                                fontSize: "0.8rem",
+                                textTransform: "none",
+                                fontWeight: 600,
+                                "&:hover": { color: "#fff", bgcolor: "transparent" },
+                            }}
+                        >
+                            Back to Cart →
+                        </Button>
+                    </Box>
+                </Box>
+            </Box>
+        );
+    }
+
     return (
         <Box sx={{ bgcolor: "#0a0c10", minHeight: "100vh", color: "#fff", px: { xs: 2, md: 5 }, py: 5 }}>
             <Typography sx={{ fontSize: { xs: "1.6rem", md: "2rem" }, fontWeight: 700, letterSpacing: "-0.02em", mb: 6 }}>
